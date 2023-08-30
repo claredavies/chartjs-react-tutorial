@@ -1,14 +1,21 @@
 .App {
-  text-align: center;
-  display: flex;  /* Add this line */
-  justify-content: space-between;  /* Add this line */
-  flex-wrap: wrap;  /* Add this line */
-  align-items: center;  /* Add this line */
+    text-align: center;
+    display: flex;
+    flex-direction: column;  /* Adjust direction to column */
+    align-items: center;  /* Center items vertically */
 }
 
-.chart-container {
-  width: 300px;
-  height: 400px;
+.app-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.charts-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .App-logo {
@@ -44,4 +51,32 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Basic styling for the dropdown */
+select {
+  padding: 10px 15px;
+  border-radius: 4px;   /* Rounded edges */
+  border: 1px solid #282c34;   /* A dark border similar to your theme */
+  background-color: #fff;  /* White background */
+  color: #282c34;  /* Dark text color */
+  font-size: 1em;   /* Font size */
+  margin: 20px;   /* Some margin around */
+  cursor: pointer;   /* Hand cursor on hover */
+}
+
+/* Styles for the dropdown options */
+select option {
+  color: #282c34;  /* Dark text color */
+  background-color: #ecf0f1;  /* Light grey background */
+}
+
+/* Styling for the dropdown on hover */
+select:hover {
+  border-color: #50AF95;  /* Changing the border color to one of your theme colors */
+}
+
+/* Styling for the dropdown arrow */
+select::-ms-expand {
+  display: none;
 }
