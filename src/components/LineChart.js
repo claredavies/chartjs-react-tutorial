@@ -1,8 +1,9 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js/auto";
 import { CHART_WIDTH, CHART_HEIGHT } from '../constants.js';
 
-function LineChart({ chartData, selectedMetric }) {
+function LineChart({ chartData, xAxisMetric, yAxisMetric }) {
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -11,8 +12,22 @@ function LineChart({ chartData, selectedMetric }) {
       },
       title: {
         display: true,
-        text: selectedMetric
+        text: xAxisMetric + " vs " + yAxisMetric
       }
+    },
+    scales: {
+          x: {
+            title: {
+              display: true,
+              text: xAxisMetric
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: yAxisMetric
+            }
+          }
     }
   };
 

@@ -1,17 +1,18 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js/auto";
 import { CHART_WIDTH, CHART_HEIGHT } from '../constants.js';
 
-function PieChart({ chartData, selectedMetric }) {
+function PieChart({ chartData, xAxisMetric, yAxisMetric }) {
   const options = {
     maintainAspectRatio: false,
     plugins: {
+      legend: {
+            position: 'bottom'
+          },
       title: {
         display: true,
-        text: selectedMetric
-      },
-      legend: {
-        position: 'bottom'
+        text: xAxisMetric + " vs " + yAxisMetric
       }
     }
   };

@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { CHART_WIDTH, CHART_HEIGHT } from '../constants.js';
 
-function BarChart({ chartData, selectedMetric }) {
+function BarChart({ chartData, xAxisMetric, yAxisMetric }) {
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -12,8 +12,22 @@ function BarChart({ chartData, selectedMetric }) {
       },
       title: {
         display: true,
-        text: selectedMetric
+        text: xAxisMetric + " vs " + yAxisMetric
       }
+    },
+    scales: {
+          x: {
+            title: {
+              display: true,
+              text: xAxisMetric
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: yAxisMetric
+            }
+          }
     }
   };
 

@@ -66,9 +66,9 @@ function App() {
 
         <div className="charts-wrapper">
             <div className="chart-container">
-                {chartType === 'Bar' && <BarChart chartData={userData}/>}
-                {chartType === 'Line' && <LineChart chartData={userData}/>}
-                {chartType === 'Pie' && <PieChart chartData={userData}/>}
+                {chartType === 'Bar' && <BarChart chartData={userData} xAxisMetric={xAxisMetric} yAxisMetric={yAxisMetric}/>}
+                {chartType === 'Line' && <LineChart chartData={userData} xAxisMetric={xAxisMetric} yAxisMetric={yAxisMetric}/>}
+                {chartType === 'Pie' && <PieChart chartData={userData} xAxisMetric={xAxisMetric} yAxisMetric={yAxisMetric}/>}
             </div>
         </div>
     </div>
