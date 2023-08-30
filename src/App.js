@@ -6,16 +6,24 @@ import PieChart from "./components/PieChart";
 import { UserData } from "./Data";
 
 function App() {
-  const [selectedMetric, setSelectedMetric] = useState('userGain');
+  const [xAxisMetric, setXAxisMetric] = useState('ServiceType');
+  const [yAxisMetric, setYAxisMetric] = useState('PricePerUnit');
+  const [chartType, setChartType] = useState('Bar');
   const [userData, setUserData] = useState({ labels: [], datasets: [] });
 
   useEffect(() => {
+    const labels = Array.from(new Set(UserData.map(data => data[xAxisMetric])));
+    const dataValues = labels.map(label => {
+      const matchedData = UserData.filter(d => d[xAxisMetric] === label);
+      return matchedData.reduce((sum, curr) => sum + curr[yAxisMetric], 0);
+    });
+
     const data = {
-      labels: UserData.map((data) => data.year),
+      labels: labels,
       datasets: [
         {
-          label: selectedMetric === 'year' ? 'Year' : (selectedMetric === 'userGain' ? 'Users Gain' : 'Users Lost'),
-          data: UserData.map((data) => data[selectedMetric]),
+          label: yAxisMetric,
+          data: dataValues,
           backgroundColor: [
             "rgba(75,192,192,1)",
             "#ecf0f1",
@@ -29,27 +37,38 @@ function App() {
       ],
     };
     setUserData(data);
-  }, [selectedMetric]);
+  }, [xAxisMetric, yAxisMetric]);
 
   return (
     <div className="App">
-        <h1 className="app-title">User Statistics Dashboard</h1>
+        <h1 className="app-title">AWS Services Price Dashboard</h1>
+
         <div className="dropdown-wrapper">
-            <select value={selectedMetric} onChange={e => setSelectedMetric(e.target.value)}>
-                <option value="userGain">Users Gained</option>
-                <option value="userLost">Users Lost</option>
+            <span>Select X-axis: </span>
+            <select value={xAxisMetric} onChange={e => setXAxisMetric(e.target.value)}>
+                <option value="ServiceType">Service Type</option>
+                <option value="InstanceType">Instance Type</option>
+                <option value="Market">Market</option>
+            </select>
+
+            <span>Select Y-axis: </span>
+            <select value={yAxisMetric} onChange={e => setYAxisMetric(e.target.value)}>
+                <option value="PricePerUnit">Price Per Unit</option>
+            </select>
+
+            <span>Select Chart Type: </span>
+            <select value={chartType} onChange={e => setChartType(e.target.value)}>
+                <option value="Bar">Bar Chart</option>
+                <option value="Line">Line Chart</option>
+                <option value="Pie">Pie Chart</option>
             </select>
         </div>
 
         <div className="charts-wrapper">
             <div className="chart-container">
-                <BarChart chartData={userData} selectedMetric={selectedMetric}/>
-            </div>
-            <div className="chart-container">
-                <LineChart chartData={userData} selectedMetric={selectedMetric}/>
-            </div>
-            <div className="chart-container">
-                <PieChart chartData={userData} selectedMetric={selectedMetric}/>
+                {chartType === 'Bar' && <BarChart chartData={userData}/>}
+                {chartType === 'Line' && <LineChart chartData={userData}/>}
+                {chartType === 'Pie' && <PieChart chartData={userData}/>}
             </div>
         </div>
     </div>
