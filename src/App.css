@@ -1,5 +1,14 @@
 .App {
   text-align: center;
+  display: flex;  /* Add this line */
+  justify-content: space-between;  /* Add this line */
+  flex-wrap: wrap;  /* Add this line */
+  align-items: center;  /* Add this line */
+}
+
+.chart-container {
+  width: 300px;
+  height: 400px;
 }
 
 .App-logo {

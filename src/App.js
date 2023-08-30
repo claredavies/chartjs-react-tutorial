@@ -29,13 +29,13 @@ function App() {
 
   return (
     <div className="App">
-      <div style={{ width: 700 }}>
+      <div className="chart-container">
         <BarChart chartData={userData} />
       </div>
-      <div style={{ width: 700 }}>
+      <div className="chart-container">
         <LineChart chartData={userData} />
       </div>
-      <div style={{ width: 700 }}>
+      <div className="chart-container">
         <PieChart chartData={userData} />
       </div>
     </div>
