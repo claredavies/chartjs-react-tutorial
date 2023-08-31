@@ -9,10 +9,12 @@ function App() {
   const [xAxisMetric, setXAxisMetric] = useState('ServiceType');
   const [yAxisMetric, setYAxisMetric] = useState('PricePerUnit');
   const [chartType, setChartType] = useState('Bar');
-  const [selectedCluster, setSelectedCluster] = useState('');  // New state for the selected cluster.
-  const [userData, setUserData] = useState({ labels: [], datasets: [] });
+  const [selectedCluster, setSelectedCluster] = useState('');
+  const [charts, setCharts] = useState([]);
 
-  useEffect(() => {
+  const clusterIDs = Array.from(new Set(UserData.map(data => data.cluster_id)));
+
+  const generateChartData = () => {
     let filteredData = UserData;
 
     if (selectedCluster) {
@@ -25,7 +27,7 @@ function App() {
       return matchedData.reduce((sum, curr) => sum + curr[yAxisMetric], 0);
     });
 
-    const data = {
+    return {
       labels: labels,
       datasets: [
         {
@@ -43,11 +45,17 @@ function App() {
         },
       ],
     };
-    setUserData(data);
-  }, [xAxisMetric, yAxisMetric, selectedCluster]);  // Add selectedCluster to the dependency array.
+  };
 
-  // Unique cluster IDs for dropdown
-  const clusterIDs = Array.from(new Set(UserData.map(data => data.cluster_id)));
+  const handleAddChart = () => {
+    const newChart = {
+      chartType,
+      xAxisMetric,
+      yAxisMetric,
+      data: generateChartData()
+    };
+    setCharts(prevCharts => [...prevCharts, newChart]);
+  };
 
   return (
     <div className="App">
@@ -78,14 +86,18 @@ function App() {
                 <option value="Line">Line Chart</option>
                 <option value="Pie">Pie Chart</option>
             </select>
+
+            <button onClick={handleAddChart}>Add Chart</button>
         </div>
 
         <div className="charts-wrapper">
-            <div className="chart-container">
-                {chartType === 'Bar' && <BarChart chartData={userData} xAxisMetric={xAxisMetric} yAxisMetric={yAxisMetric}/>}
-                {chartType === 'Line' && <LineChart chartData={userData} xAxisMetric={xAxisMetric} yAxisMetric={yAxisMetric}/>}
-                {chartType === 'Pie' && <PieChart chartData={userData} xAxisMetric={xAxisMetric} yAxisMetric={yAxisMetric}/>}
-            </div>
+            {charts.map((config, index) => (
+              <div key={index} className="chart-container">
+                {config.chartType === 'Bar' && <BarChart chartData={config.data} xAxisMetric={config.xAxisMetric} yAxisMetric={config.yAxisMetric}/>}
+                {config.chartType === 'Line' && <LineChart chartData={config.data} xAxisMetric={config.xAxisMetric} yAxisMetric={config.yAxisMetric}/>}
+                {config.chartType === 'Pie' && <PieChart chartData={config.data} xAxisMetric={config.xAxisMetric} yAxisMetric={config.yAxisMetric}/>}
+              </div>
+            ))}
         </div>
     </div>
   );
