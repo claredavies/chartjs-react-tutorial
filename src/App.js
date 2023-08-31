@@ -95,15 +95,35 @@ function App() {
         </div>
 
         <div className="charts-wrapper">
-            {charts.map((config, index) => (
-              <div key={index} className="chart-container">
-                <button onClick={() => handleDeleteChart(index)} style={{position: 'absolute', right: '10px'}}>X</button>
-                {config.chartType === 'Bar' && <BarChart chartData={config.data} xAxisMetric={config.xAxisMetric} yAxisMetric={config.yAxisMetric}/>}
-                {config.chartType === 'Line' && <LineChart chartData={config.data} xAxisMetric={config.xAxisMetric} yAxisMetric={config.yAxisMetric}/>}
-                {config.chartType === 'Pie' && <PieChart chartData={config.data} xAxisMetric={config.xAxisMetric} yAxisMetric={config.yAxisMetric}/>}
-              </div>
-            ))}
-        </div>
+                    {charts.map((config, index) => (
+                      <div key={index} className="chart-container">
+                        {config.chartType === 'Bar' && (
+                          <BarChart
+                            chartData={config.data}
+                            xAxisMetric={config.xAxisMetric}
+                            yAxisMetric={config.yAxisMetric}
+                            onDelete={() => handleDeleteChart(index)}
+                          />
+                        )}
+                        {config.chartType === 'Line' && (
+                          <LineChart
+                            chartData={config.data}
+                            xAxisMetric={config.xAxisMetric}
+                            yAxisMetric={config.yAxisMetric}
+                            onDelete={() => handleDeleteChart(index)}  // Assuming you made changes to LineChart similar to BarChart
+                          />
+                        )}
+                        {config.chartType === 'Pie' && (
+                          <PieChart
+                            chartData={config.data}
+                            xAxisMetric={config.xAxisMetric}
+                            yAxisMetric={config.yAxisMetric}
+                            onDelete={() => handleDeleteChart(index)}  // Assuming you made changes to PieChart similar to BarChart
+                          />
+                        )}
+                      </div>
+                    ))}
+                </div>
     </div>
   );
 }

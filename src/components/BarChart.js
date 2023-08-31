@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { CHART_WIDTH, CHART_HEIGHT } from '../constants.js';
 
-function BarChart({ chartData, xAxisMetric, yAxisMetric }) {
+function BarChart({ chartData, xAxisMetric, yAxisMetric, onDelete }) {
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -31,7 +31,21 @@ function BarChart({ chartData, xAxisMetric, yAxisMetric }) {
     }
   };
 
-  return <Bar data={chartData} options={options} height={CHART_HEIGHT} width={CHART_WIDTH} />;
+  return (
+    <div style={{position: 'relative'}}>
+      <button
+        onClick={onDelete}
+        style={{
+          position: 'absolute',
+          top: '5px',
+          right: '5px',
+          zIndex: 1
+        }}>
+        X
+      </button>
+      <Bar data={chartData} options={options} height={CHART_HEIGHT} width={CHART_WIDTH} />
+    </div>
+  );
 }
 
 export default BarChart;
