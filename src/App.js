@@ -9,12 +9,19 @@ function App() {
   const [xAxisMetric, setXAxisMetric] = useState('ServiceType');
   const [yAxisMetric, setYAxisMetric] = useState('PricePerUnit');
   const [chartType, setChartType] = useState('Bar');
+  const [selectedCluster, setSelectedCluster] = useState('');  // New state for the selected cluster.
   const [userData, setUserData] = useState({ labels: [], datasets: [] });
 
   useEffect(() => {
-    const labels = Array.from(new Set(UserData.map(data => data[xAxisMetric])));
+    let filteredData = UserData;
+
+    if (selectedCluster) {
+      filteredData = UserData.filter(data => data.cluster_id === selectedCluster);
+    }
+
+    const labels = Array.from(new Set(filteredData.map(data => data[xAxisMetric])));
     const dataValues = labels.map(label => {
-      const matchedData = UserData.filter(d => d[xAxisMetric] === label);
+      const matchedData = filteredData.filter(d => d[xAxisMetric] === label);
       return matchedData.reduce((sum, curr) => sum + curr[yAxisMetric], 0);
     });
 
@@ -37,13 +44,22 @@ function App() {
       ],
     };
     setUserData(data);
-  }, [xAxisMetric, yAxisMetric]);
+  }, [xAxisMetric, yAxisMetric, selectedCluster]);  // Add selectedCluster to the dependency array.
+
+  // Unique cluster IDs for dropdown
+  const clusterIDs = Array.from(new Set(UserData.map(data => data.cluster_id)));
 
   return (
     <div className="App">
         <h1 className="app-title">AWS Services Price Dashboard</h1>
 
         <div className="dropdown-wrapper">
+            <span>Select Cluster: </span>
+            <select value={selectedCluster} onChange={e => setSelectedCluster(e.target.value)}>
+                <option value="">All Clusters</option>
+                {clusterIDs.map(id => <option key={id} value={id}>{id}</option>)}
+            </select>
+
             <span>Select X-axis: </span>
             <select value={xAxisMetric} onChange={e => setXAxisMetric(e.target.value)}>
                 <option value="ServiceType">Service Type</option>
