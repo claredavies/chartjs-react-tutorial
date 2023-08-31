@@ -8,27 +8,13 @@ function PieChart({ chartData, xAxisMetric, yAxisMetric, onDelete }) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false
+        position: 'bottom'
       },
       title: {
         display: true,
         text: xAxisMetric + " vs " + yAxisMetric
       }
     },
-    scales: {
-          x: {
-            title: {
-              display: true,
-              text: xAxisMetric
-            }
-          },
-          y: {
-            title: {
-              display: true,
-              text: yAxisMetric
-            }
-          }
-    }
   };
 
   return (

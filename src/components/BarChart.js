@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { CHART_WIDTH, CHART_HEIGHT } from '../constants.js';
 
-function BarChart({ chartData, xAxisMetric, yAxisMetric, onDelete }) {
+function BarChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete }) {
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -12,7 +12,7 @@ function BarChart({ chartData, xAxisMetric, yAxisMetric, onDelete }) {
       },
       title: {
         display: true,
-        text: xAxisMetric + " vs " + yAxisMetric
+        text: xAxisMetric + " vs " + yAxisMetric + " for " + clusterName
       }
     },
     scales: {

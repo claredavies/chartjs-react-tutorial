@@ -77,6 +77,7 @@ function App() {
                 <option value="ServiceType">Service Type</option>
                 <option value="InstanceType">Instance Type</option>
                 <option value="Market">Market</option>
+                <option value="Name">Name</option>
             </select>
 
             <span>Select Y-axis: </span>
@@ -102,6 +103,7 @@ function App() {
                             chartData={config.data}
                             xAxisMetric={config.xAxisMetric}
                             yAxisMetric={config.yAxisMetric}
+                            clusterName={selectedCluster}
                             onDelete={() => handleDeleteChart(index)}
                           />
                         )}
