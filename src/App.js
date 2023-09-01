@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import { colorSet1, colorSet2 } from './constants.js';
+import { useState } from "react";
 import "./App.css";
-import BarChart from "./components/BarChart";
-import LineChart from "./components/LineChart";
-import PieChart from "./components/PieChart";
 import { UserData } from "./Data";
 import ControlsWrapper from "./components/ControlsWrapper";
 import ChartRenderer from './components/ChartRenderer';
@@ -16,7 +14,23 @@ function App() {
 
   const clusterIDs = Array.from(new Set(UserData.map(data => data.cluster_id)));
 
-  const generateChartData = () => {
+  const colorSet1 = [
+    "rgba(75,192,192,1)",
+    "#ecf0f1",
+    "#50AF95",
+    "#f3ba2f",
+    "#2a71d0",
+  ];
+
+  const colorSet2 = [
+    "rgba(255,99,132,1)",
+    "#f39c12",
+    "#3498db",
+    "#c0392b",
+    "#8e44ad",
+  ];
+
+  const generateChartData = (index) => {
     let filteredData = UserData;
 
     if (selectedCluster) {
@@ -29,19 +43,15 @@ function App() {
       return matchedData.reduce((sum, curr) => sum + curr[yAxisMetric], 0);
     });
 
+    const colors = index % 2 === 0 ? colorSet1 : colorSet2;
+
     return {
       labels: labels,
       datasets: [
         {
           label: yAxisMetric,
           data: dataValues,
-          backgroundColor: [
-            "rgba(75,192,192,1)",
-            "#ecf0f1",
-            "#50AF95",
-            "#f3ba2f",
-            "#2a71d0",
-          ],
+          backgroundColor: colors,
           borderColor: "black",
           borderWidth: 2,
         },
@@ -50,19 +60,19 @@ function App() {
   };
 
   const handleDeleteChart = (index) => {
-      setCharts(prevCharts => prevCharts.filter((_, idx) => idx !== index));
-    };
+    setCharts(prevCharts => prevCharts.filter((_, idx) => idx !== index));
+  };
 
-   const handleAddChart = () => {
-       const newChart = {
-         chartType,
-         xAxisMetric,
-         yAxisMetric,
-         clusterName: selectedCluster || 'All Clusters',
-         data: generateChartData()
-       };
-       setCharts(prevCharts => [...prevCharts, newChart]);
-     };
+  const handleAddChart = () => {
+    const newChart = {
+      chartType,
+      xAxisMetric,
+      yAxisMetric,
+      clusterName: selectedCluster || 'All Clusters',
+      data: generateChartData(charts.length)
+    };
+    setCharts(prevCharts => [...prevCharts, newChart]);
+  };
 
   return (
     <div className="App">
@@ -78,11 +88,11 @@ function App() {
         />
 
         <div className="charts-wrapper">
-                {charts.map((config, index) => (
-                  <div key={index} className="chart-container">
-                    <ChartRenderer config={config} onDelete={() => handleDeleteChart(index)} />
-                  </div>
-                ))}
+            {charts.map((config, index) => (
+              <div key={index} className="chart-container">
+                <ChartRenderer config={config} onDelete={() => handleDeleteChart(index)} />
+              </div>
+            ))}
         </div>
     </div>
   );
