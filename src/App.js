@@ -4,6 +4,7 @@ import BarChart from "./components/BarChart";
 import LineChart from "./components/LineChart";
 import PieChart from "./components/PieChart";
 import { UserData } from "./Data";
+import ControlsWrapper from "./components/ControlsWrapper"; // <-- Import here
 
 function App() {
   const [xAxisMetric, setXAxisMetric] = useState('ServiceType');
@@ -47,54 +48,33 @@ function App() {
     };
   };
 
-  const handleAddChart = () => {
-    const newChart = {
-      chartType,
-      xAxisMetric,
-      yAxisMetric,
-      clusterName: selectedCluster || 'All Clusters',
-      data: generateChartData()
-    };
-    setCharts(prevCharts => [...prevCharts, newChart]);
-  };
-
   const handleDeleteChart = (index) => {
       setCharts(prevCharts => prevCharts.filter((_, idx) => idx !== index));
     };
+
+   const handleAddChart = () => {
+       const newChart = {
+         chartType,
+         xAxisMetric,
+         yAxisMetric,
+         clusterName: selectedCluster || 'All Clusters',
+         data: generateChartData()
+       };
+       setCharts(prevCharts => [...prevCharts, newChart]);
+     };
 
   return (
     <div className="App">
         <h1 className="app-title">AWS Services Price Dashboard</h1>
 
-        <div className="dropdown-wrapper">
-            <span>Select Cluster: </span>
-            <select value={selectedCluster} onChange={e => setSelectedCluster(e.target.value)}>
-                <option value="">All Clusters</option>
-                {clusterIDs.map(id => <option key={id} value={id}>{id}</option>)}
-            </select>
-
-            <span>Select X-axis: </span>
-            <select value={xAxisMetric} onChange={e => setXAxisMetric(e.target.value)}>
-                <option value="ServiceType">Service Type</option>
-                <option value="InstanceType">Instance Type</option>
-                <option value="Market">Market</option>
-                <option value="Name">Name</option>
-            </select>
-
-            <span>Select Y-axis: </span>
-            <select value={yAxisMetric} onChange={e => setYAxisMetric(e.target.value)}>
-                <option value="PricePerUnit">Price Per Unit</option>
-            </select>
-
-            <span>Select Chart Type: </span>
-            <select value={chartType} onChange={e => setChartType(e.target.value)}>
-                <option value="Bar">Bar Chart</option>
-                <option value="Line">Line Chart</option>
-                <option value="Pie">Pie Chart</option>
-            </select>
-
-            <button onClick={handleAddChart}>Add Chart</button>
-        </div>
+        <ControlsWrapper
+                selectedCluster={selectedCluster} setSelectedCluster={setSelectedCluster}
+                xAxisMetric={xAxisMetric} setXAxisMetric={setXAxisMetric}
+                yAxisMetric={yAxisMetric} setYAxisMetric={setYAxisMetric}
+                chartType={chartType} setChartType={setChartType}
+                clusterIDs={clusterIDs}
+                onAddChart={handleAddChart}
+        />
 
         <div className="charts-wrapper">
                     {charts.map((config, index) => (
