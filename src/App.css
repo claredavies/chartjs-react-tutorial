@@ -11,6 +11,10 @@
     color: #333;
 }
 
+.chart-container {
+    padding: 10px;  /* adjust this value as needed */
+}
+
 .charts-wrapper {
     display: flex;
     justify-content: space-between;

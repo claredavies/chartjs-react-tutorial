@@ -2,6 +2,7 @@ import React from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { CHART_WIDTH, CHART_HEIGHT } from '../constants.js';
+import CommonChartWrapper from './CommonChartWrapper';  // Import the CommonChartWrapper
 
 function PieChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete }) {
   const options = {
@@ -32,20 +33,10 @@ function PieChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete }
   };
 
   return (
-    <div style={{position: 'relative'}}>
-      <button
-        onClick={onDelete}
-        style={{
-          position: 'absolute',
-          top: '5px',
-          right: '-10px',
-          zIndex: 1
-        }}>
-        X
-      </button>
-      <Pie data={chartData} options={options} height={CHART_HEIGHT} width={CHART_WIDTH} />
-    </div>
-  );
+        <CommonChartWrapper onDelete={onDelete}>
+          <Pie data={chartData} options={options} height={CHART_HEIGHT} width={CHART_WIDTH} />
+        </CommonChartWrapper>
+      );
 }
 
 export default PieChart;
