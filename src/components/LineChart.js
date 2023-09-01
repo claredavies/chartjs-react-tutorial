@@ -3,7 +3,7 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { CHART_WIDTH, CHART_HEIGHT } from '../constants.js';
 
-function LineChart({ chartData, xAxisMetric, yAxisMetric, onDelete }) {
+function LineChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete }) {
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -12,7 +12,7 @@ function LineChart({ chartData, xAxisMetric, yAxisMetric, onDelete }) {
       },
       title: {
         display: true,
-        text: xAxisMetric + " vs " + yAxisMetric
+        text: xAxisMetric + " vs " + yAxisMetric + " for " + clusterName
       }
     },
     scales: {
@@ -38,7 +38,7 @@ function LineChart({ chartData, xAxisMetric, yAxisMetric, onDelete }) {
         style={{
           position: 'absolute',
           top: '5px',
-          right: '5px',
+          right: '-10px',
           zIndex: 1
         }}>
         X

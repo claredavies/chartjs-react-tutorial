@@ -52,6 +52,7 @@ function App() {
       chartType,
       xAxisMetric,
       yAxisMetric,
+      clusterName: selectedCluster || 'All Clusters',
       data: generateChartData()
     };
     setCharts(prevCharts => [...prevCharts, newChart]);
@@ -103,7 +104,7 @@ function App() {
                             chartData={config.data}
                             xAxisMetric={config.xAxisMetric}
                             yAxisMetric={config.yAxisMetric}
-                            clusterName={selectedCluster}
+                            clusterName={config.clusterName}
                             onDelete={() => handleDeleteChart(index)}
                           />
                         )}
@@ -112,6 +113,7 @@ function App() {
                             chartData={config.data}
                             xAxisMetric={config.xAxisMetric}
                             yAxisMetric={config.yAxisMetric}
+                            clusterName={config.clusterName}
                             onDelete={() => handleDeleteChart(index)}  // Assuming you made changes to LineChart similar to BarChart
                           />
                         )}
@@ -120,6 +122,7 @@ function App() {
                             chartData={config.data}
                             xAxisMetric={config.xAxisMetric}
                             yAxisMetric={config.yAxisMetric}
+                            clusterName={config.clusterName}
                             onDelete={() => handleDeleteChart(index)}  // Assuming you made changes to PieChart similar to BarChart
                           />
                         )}

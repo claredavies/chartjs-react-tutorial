@@ -38,7 +38,7 @@ function BarChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete }
         style={{
           position: 'absolute',
           top: '5px',
-          right: '5px',
+          right: '-10px',
           zIndex: 1
         }}>
         X
