@@ -9,7 +9,7 @@ function PieChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete, 
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false
+        position: 'bottom'
       },
       title: {
         display: true,

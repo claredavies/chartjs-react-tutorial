@@ -4,6 +4,9 @@ import "./App.css";
 import { UserData } from "./Data";
 import ControlsWrapper from "./components/ControlsWrapper";
 import ChartRenderer from './components/ChartRenderer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [xAxisMetric, setXAxisMetric] = useState('ServiceType');
@@ -69,11 +72,8 @@ function App() {
     <div className="App">
         <h1 className="app-title">AWS Services Price Dashboard</h1>
          {/* Add the Edit button here */}
-              <button
-                  onClick={() => setIsEditing(!isEditing)}
-                  style={{ position: 'absolute', top: '10px', right: '10px' }}
-              >
-                  {isEditing ? 'Finish Editing' : 'Edit'}
+              <button onClick={() => setIsEditing(!isEditing)} className="edit-button">
+                  <FontAwesomeIcon icon={isEditing ? faCheck : faCog} />
               </button>
         <ControlsWrapper
                 selectedCluster={selectedCluster} setSelectedCluster={setSelectedCluster}

@@ -23,6 +23,31 @@
     padding: 15px;
 }
 
+.edit-button {
+    right: 10px;
+    position: absolute;
+    padding: 10px;
+    top: 5px;
+    zIndex: 1;
+    border-radius: 50%;
+    line-height: 25px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    border: 2px solid black; /* Black outline */
+    background-color: transparent;
+}
+
+.edit-button:hover {
+    background-color: #D3D3D3; /* Darker blue on hover */
+}
+
+.edit-button:active {
+    background-color: #D3D3D3;
+}
+
 .delete-button {
     position: absolute;
     top: 5px;
