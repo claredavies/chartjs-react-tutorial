@@ -20,6 +20,29 @@
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
+    padding: 15px;
+}
+
+.delete-button {
+    position: absolute;
+    top: 5px;
+    right: -10px;
+    zIndex: 1;
+    border-radius: 50%;     /* Circle button */
+    width: 25px;            /* Fixed width */
+    height: 25px;           /* Fixed height */
+    line-height: 25px;      /* Vertically center the "X" */
+    text-align: center;     /* Horizontally center the "X" */
+    background-color: #2a71d0; /* Blue background color */
+    color: white;           /* White text color */
+    border: none;           /* No border */
+    cursor: pointer;        /* Hand cursor */
+    font-weight: bold;      /* Bold "X" */
+    font-size: 1em;         /* Font size */
+}
+
+.delete-button:hover {
+    background-color: #1f5bb6; /* Darker blue on hover */
 }
 
 .App-logo {
@@ -78,6 +101,23 @@ select option {
 /* Styling for the dropdown on hover */
 select:hover {
   border-color: #50AF95;  /* Changing the border color to one of your theme colors */
+}
+
+.dropdown-wrapper button {
+    padding: 10px 15px;
+    border-radius: 25px;  /* Increased for a more rounded appearance */
+    border: 1px solid #2a71d0;  /* Blue border */
+    background-color: #2a71d0;  /* Blue background */
+    color: #fff;  /* White text color */
+    font-size: 1em;
+    margin: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for hover */
+}
+
+.dropdown-wrapper button:hover {
+    background-color: #1f5bb6; /* Darker blue on hover */
+    border-color: #1f5bb6;     /* Darker blue on hover */
 }
 
 /* Styling for the dropdown arrow */

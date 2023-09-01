@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2";
 import { CHART_WIDTH, CHART_HEIGHT } from '../constants.js';
 import CommonChartWrapper from './CommonChartWrapper';  // Import the CommonChartWrapper
 
-function BarChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete }) {
+function BarChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete, showDelete }) {
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -32,7 +32,7 @@ function BarChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete }
   };
 
   return (
-    <CommonChartWrapper onDelete={onDelete}>
+    <CommonChartWrapper onDelete={onDelete} showDelete={showDelete}>
       <Bar data={chartData} options={options} height={CHART_HEIGHT} width={CHART_WIDTH} />
     </CommonChartWrapper>
   );

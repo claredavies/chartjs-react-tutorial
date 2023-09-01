@@ -1,20 +1,18 @@
-// CommonChartWrapper.js
-
 import React from "react";
 
-function CommonChartWrapper({ children, onDelete }) {
+function CommonChartWrapper({ children, onDelete, showDelete }) {
   return (
     <div style={{ position: 'relative' }}>
-      <button
-        onClick={onDelete}
-        style={{
-          position: 'absolute',
-          top: '5px',
-          right: '-10px',
-          zIndex: 1
-        }}>
-        X
-      </button>
+      {showDelete && (
+        <button
+          onClick={onDelete}
+          className="delete-button"
+          onMouseOver={e => e.target.style.backgroundColor = '#1f5bb6'} // Darker blue on hover
+          onMouseOut={e => e.target.style.backgroundColor = '#2a71d0'}  // Blue on mouse out
+        >
+          X
+        </button>
+      )}
       {children}
     </div>
   );

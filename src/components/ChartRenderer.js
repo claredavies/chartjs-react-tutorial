@@ -3,7 +3,7 @@ import BarChart from './BarChart';
 import LineChart from './LineChart';
 import PieChart from './PieChart';
 
-function ChartRenderer({ config, onDelete }) {
+function ChartRenderer({ config, onDelete, showDelete }) {
   const { chartType, data, xAxisMetric, yAxisMetric, clusterName } = config;
 
   switch (chartType) {
@@ -14,6 +14,7 @@ function ChartRenderer({ config, onDelete }) {
           xAxisMetric={xAxisMetric}
           yAxisMetric={yAxisMetric}
           clusterName={clusterName}
+          showDelete={showDelete}
           onDelete={onDelete}
         />
       );
@@ -25,6 +26,7 @@ function ChartRenderer({ config, onDelete }) {
           xAxisMetric={xAxisMetric}
           yAxisMetric={yAxisMetric}
           clusterName={clusterName}
+          showDelete={showDelete}
           onDelete={onDelete}
         />
       );
@@ -36,6 +38,7 @@ function ChartRenderer({ config, onDelete }) {
           xAxisMetric={xAxisMetric}
           yAxisMetric={yAxisMetric}
           clusterName={clusterName}
+          showDelete={showDelete}
           onDelete={onDelete}
         />
       );

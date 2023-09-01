@@ -4,7 +4,7 @@ import { Chart as ChartJS } from "chart.js/auto";
 import { CHART_WIDTH, CHART_HEIGHT } from '../constants.js';
 import CommonChartWrapper from './CommonChartWrapper';  // Import the CommonChartWrapper
 
-function PieChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete }) {
+function PieChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete, showDelete }) {
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -33,7 +33,7 @@ function PieChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete }
   };
 
   return (
-        <CommonChartWrapper onDelete={onDelete}>
+        <CommonChartWrapper onDelete={onDelete} showDelete={showDelete}>
           <Pie data={chartData} options={options} height={CHART_HEIGHT} width={CHART_WIDTH} />
         </CommonChartWrapper>
       );

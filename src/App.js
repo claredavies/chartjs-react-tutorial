@@ -12,23 +12,9 @@ function App() {
   const [selectedCluster, setSelectedCluster] = useState('');
   const [charts, setCharts] = useState([]);
 
+  const [isEditing, setIsEditing] = useState(false);
+
   const clusterIDs = Array.from(new Set(UserData.map(data => data.cluster_id)));
-
-  const colorSet1 = [
-    "rgba(75,192,192,1)",
-    "#ecf0f1",
-    "#50AF95",
-    "#f3ba2f",
-    "#2a71d0",
-  ];
-
-  const colorSet2 = [
-    "rgba(255,99,132,1)",
-    "#f39c12",
-    "#3498db",
-    "#c0392b",
-    "#8e44ad",
-  ];
 
   const generateChartData = (index) => {
     let filteredData = UserData;
@@ -60,6 +46,11 @@ function App() {
   };
 
   const handleDeleteChart = (index) => {
+    if (!isEditing) {
+      console.warn("Deletion is currently not allowed.");
+      return;
+    }
+
     setCharts(prevCharts => prevCharts.filter((_, idx) => idx !== index));
   };
 
@@ -77,7 +68,13 @@ function App() {
   return (
     <div className="App">
         <h1 className="app-title">AWS Services Price Dashboard</h1>
-
+         {/* Add the Edit button here */}
+              <button
+                  onClick={() => setIsEditing(!isEditing)}
+                  style={{ position: 'absolute', top: '10px', right: '10px' }}
+              >
+                  {isEditing ? 'Finish Editing' : 'Edit'}
+              </button>
         <ControlsWrapper
                 selectedCluster={selectedCluster} setSelectedCluster={setSelectedCluster}
                 xAxisMetric={xAxisMetric} setXAxisMetric={setXAxisMetric}
@@ -88,11 +85,15 @@ function App() {
         />
 
         <div className="charts-wrapper">
-            {charts.map((config, index) => (
-              <div key={index} className="chart-container">
-                <ChartRenderer config={config} onDelete={() => handleDeleteChart(index)} />
-              </div>
-            ))}
+                {charts.map((config, index) => (
+                  <div key={index} className="chart-container">
+                    <ChartRenderer
+                        config={config}
+                        onDelete={() => handleDeleteChart(index)}
+                        showDelete={isEditing}  // Pass the isEditing state as a prop
+                    />
+                  </div>
+                ))}
         </div>
     </div>
   );
