@@ -4,7 +4,8 @@ import BarChart from "./components/BarChart";
 import LineChart from "./components/LineChart";
 import PieChart from "./components/PieChart";
 import { UserData } from "./Data";
-import ControlsWrapper from "./components/ControlsWrapper"; // <-- Import here
+import ControlsWrapper from "./components/ControlsWrapper";
+import ChartRenderer from './components/ChartRenderer';
 
 function App() {
   const [xAxisMetric, setXAxisMetric] = useState('ServiceType');
@@ -77,38 +78,12 @@ function App() {
         />
 
         <div className="charts-wrapper">
-                    {charts.map((config, index) => (
-                      <div key={index} className="chart-container">
-                        {config.chartType === 'Bar' && (
-                          <BarChart
-                            chartData={config.data}
-                            xAxisMetric={config.xAxisMetric}
-                            yAxisMetric={config.yAxisMetric}
-                            clusterName={config.clusterName}
-                            onDelete={() => handleDeleteChart(index)}
-                          />
-                        )}
-                        {config.chartType === 'Line' && (
-                          <LineChart
-                            chartData={config.data}
-                            xAxisMetric={config.xAxisMetric}
-                            yAxisMetric={config.yAxisMetric}
-                            clusterName={config.clusterName}
-                            onDelete={() => handleDeleteChart(index)}  // Assuming you made changes to LineChart similar to BarChart
-                          />
-                        )}
-                        {config.chartType === 'Pie' && (
-                          <PieChart
-                            chartData={config.data}
-                            xAxisMetric={config.xAxisMetric}
-                            yAxisMetric={config.yAxisMetric}
-                            clusterName={config.clusterName}
-                            onDelete={() => handleDeleteChart(index)}  // Assuming you made changes to PieChart similar to BarChart
-                          />
-                        )}
-                      </div>
-                    ))}
-                </div>
+                {charts.map((config, index) => (
+                  <div key={index} className="chart-container">
+                    <ChartRenderer config={config} onDelete={() => handleDeleteChart(index)} />
+                  </div>
+                ))}
+        </div>
     </div>
   );
 }
