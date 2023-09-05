@@ -1,29 +1,39 @@
 import { colorSet1, colorSet2 } from './constants.js';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
-import { UserData } from "./Data";
 import ControlsWrapper from "./components/ControlsWrapper";
 import ChartRenderer from './components/ChartRenderer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
+import jsonData from './data/estimate.json';
+import transformData from './components/dataTransform';
+
 function App() {
+  const [selectedDataType, setSelectedDataType] = useState('Instances'); // default to Instances
+  const [transformedInstanceData, setTransformedInstanceData] = useState(transformData(jsonData, selectedDataType));
   const [xAxisMetric, setXAxisMetric] = useState('ServiceType');
   const [yAxisMetric, setYAxisMetric] = useState('PricePerUnit');
   const [chartType, setChartType] = useState('Bar');
   const [selectedCluster, setSelectedCluster] = useState('');
   const [charts, setCharts] = useState([]);
-
   const [isEditing, setIsEditing] = useState(false);
 
-  const clusterIDs = Array.from(new Set(UserData.map(data => data.cluster_id)));
+  useEffect(() => {
+    console.log("Changing selectedDataType to:", selectedDataType);
+    const newData = transformData(jsonData, selectedDataType);
+    console.log("New transformed data:", newData);
+    setTransformedInstanceData(newData);
+  }, [selectedDataType]);
+
+  const clusterIDs = Array.from(new Set(transformedInstanceData.map(data => data.ClusterId)));
 
   const generateChartData = (index) => {
-    let filteredData = UserData;
+    let filteredData = transformedInstanceData;
 
     if (selectedCluster) {
-      filteredData = UserData.filter(data => data.cluster_id === selectedCluster);
+      filteredData = transformedInstanceData.filter(data => data.ClusterId === selectedCluster);
     }
 
     const labels = Array.from(new Set(filteredData.map(data => data[xAxisMetric])));
@@ -77,6 +87,8 @@ function App() {
               </button>
         <ControlsWrapper
                 selectedCluster={selectedCluster} setSelectedCluster={setSelectedCluster}
+                selectedDataType={selectedDataType}
+                setSelectedDataType={setSelectedDataType}
                 xAxisMetric={xAxisMetric} setXAxisMetric={setXAxisMetric}
                 yAxisMetric={yAxisMetric} setYAxisMetric={setYAxisMetric}
                 chartType={chartType} setChartType={setChartType}
