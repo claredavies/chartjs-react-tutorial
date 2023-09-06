@@ -11,12 +11,15 @@ function ControlsWrapper({
 
   const xAxisOptions = {
     'Instances': [
-      { value: "ServiceType", label: "Service Type" },
-      { value: "ClusterName", label: "Cluster Name" },
+      { value: "Ec2InstanceId", label: "Ec2 Instance Id" },
+      { value: "InstanceType", label: "Instance Type" },
+      { value: "Market", label: "Market" },
+      { value: "State", label: "State" },
     ],
     'Applications': [
-      { value: "ApplicationName", label: "Application Name" }
-      // Add relevant x-axis options for Applications here
+      { value: "ApplicationName", label: "Application Name" },
+      { value: "ApplicationId", label: "Application Id" },
+      { value: "State", label: "State" }
     ]
   };
 
@@ -29,8 +32,8 @@ function ControlsWrapper({
     'Applications': [
        { value: "ElapsedTime", label: "Elapsed Time" },
        { value: "AttributedCost", label: "Attributed Cost" },
-
-      // Add relevant y-axis options for Applications here
+       { value: "MemorySeconds", label: "Memory Seconds" },
+       { value: "VcoreSeconds", label: "Vcore Seconds" }
     ]
   };
 
@@ -46,12 +49,6 @@ function ControlsWrapper({
       <select value={selectedDataType} onChange={e => setSelectedDataType(e.target.value)}>
         <option value="Instances">Instances</option>
         <option value="Applications">Applications</option>
-      </select>
-
-      <span>Select Cluster: </span>
-      <select value={selectedCluster} onChange={e => setSelectedCluster(e.target.value)}>
-        <option value="">All Clusters</option>
-        {clusterIDs.map(id => <option key={id} value={id}>{id}</option>)}
       </select>
 
       <span>Select X-axis: </span>

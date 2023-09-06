@@ -4,35 +4,38 @@ import "./App.css";
 import ControlsWrapper from "./components/ControlsWrapper";
 import ChartRenderer from './components/ChartRenderer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-
-import jsonData from './data/estimate.json';
+import { faCog, faCheck } from '@fortawesome/free-solid-svg-icons';
 import transformData from './components/dataTransform';
 
 function App() {
-   // useState means if selectedDataType e.g. Instances, is updated using setSelectedDataType the relevant component will re-render
+  const [jsonData, setJsonData] = useState(null);
+
   const [selectedDataType, setSelectedDataType] = useState('Instances');
-  // the transformedInstanceData updated when the selectedDataType changes (Application or Instances)
-  const [transformedInstanceData, setTransformedInstanceData] = useState(transformData(jsonData, selectedDataType));
+  // Initialize transformedInstanceData as an empty array
+  const [transformedInstanceData, setTransformedInstanceData] = useState([]);
+
+  // Fetching data from the API
+  useEffect(() => {
+      fetch('https://c6d36951-f570-4bce-81d1-802fc1bdbe9e.mock.pstmn.io/estimates')
+          .then(response => response.json())
+          .then(data => setJsonData(data))
+          .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+  // Transform data when necessary
+  useEffect(() => {
+    if (jsonData) {
+        const newData = transformData(jsonData, selectedDataType);
+        setTransformedInstanceData(newData);
+    }
+  }, [selectedDataType, jsonData]);
+
   const [xAxisMetric, setXAxisMetric] = useState('ServiceType');
   const [yAxisMetric, setYAxisMetric] = useState('PricePerUnit');
   const [chartType, setChartType] = useState('Bar');
   const [selectedCluster, setSelectedCluster] = useState('');
-  // charts initially set as an empty array
   const [charts, setCharts] = useState([]);
-  // isEditing is set to default false
   const [isEditing, setIsEditing] = useState(false);
-
-// 1. selectedDataType changes.
-// 2. React schedules a re-render.
-// 3. Before rendering to the DOM, the useEffect that watches selectedDataType runs.
-// 4. Inside the useEffect, transformedInstanceData gets updated.
-// 5. The component renders to the DOM with both the new selectedDataType and the updated transformedInstanceData.
-  useEffect(() => {
-    const newData = transformData(jsonData, selectedDataType);
-    setTransformedInstanceData(newData);
-  }, [selectedDataType]);
 
   const clusterIDs = Array.from(new Set(transformedInstanceData.map(data => data.ClusterId)));
 

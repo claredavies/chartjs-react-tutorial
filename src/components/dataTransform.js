@@ -14,10 +14,13 @@ const transformData = (jsonData, dataType) => {
             transformedInstances.push({
                 ClusterId: jsonData.ClusterId,
                 ClusterName: jsonData.ClusterName,
-                ServiceType: instance.InstanceType,
+                InstanceType: instance.InstanceType,
                 PricePerUnit: instance.TotalPricePerUnit,
                 EC2PricePerUnit: instance.EC2PricePerUnit,
                 EMRPricePerUnit: instance.EMRPricePerUnit,
+                Ec2InstanceId: instance.Ec2InstanceId,
+                State: instance.State,
+                Market: instance.Market
             });
         });
         return transformedInstances;
@@ -32,6 +35,8 @@ const transformData = (jsonData, dataType) => {
                 State: application.State,
                 FinalStatus: application.FinalStatus,
                 ElapsedTime: application.ElapsedTime,
+                MemorySeconds: application.MemorySeconds,
+                VcoreSeconds: application.VcoreSeconds,
                 AttributedCost: application.AttributedCost
             });
         });
