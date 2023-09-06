@@ -9,8 +9,6 @@
 const transformData = (jsonData, dataType) => {
 
     if (dataType === 'Instances') {
-            console.log("here2")
-
         const transformedInstances = [];
         jsonData.Instances.forEach(instance => {
             transformedInstances.push({
@@ -25,7 +23,6 @@ const transformData = (jsonData, dataType) => {
         return transformedInstances;
 
     } else if (dataType === 'Applications') {
-        console.log("here")
         const transformedApplications = [];
         jsonData.Applications.forEach(application => {
             transformedApplications.push({
