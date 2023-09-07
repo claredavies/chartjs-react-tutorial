@@ -37,6 +37,18 @@ function ControlsWrapper({
     ]
   };
 
+  const dataOptions = {
+    'Instances': [
+      { value: "Ec2InstanceId", label: "Ec2 Instance Id" },
+      { value: "InstanceType", label: "Instance Type" },
+      // ... other data options for Instances
+    ],
+    'Applications': [
+      { value: "ApplicationName", label: "Application Name" },
+      // ... other data options for Applications
+    ]
+  };
+
   useEffect(() => {
     // Reset x and y axis metrics when changing data type
     setXAxisMetric(xAxisOptions[selectedDataType][0].value);
@@ -51,6 +63,23 @@ function ControlsWrapper({
         <option value="Applications">Applications</option>
       </select>
 
+      <span>Select Chart Type: </span>
+            <select value={chartType} onChange={e => setChartType(e.target.value)}>
+              <option value="Bar">Bar Chart</option>
+              <option value="Line">Line Chart</option>
+              <option value="Pie">Pie Chart</option>
+            </select>
+
+    {chartType === 'Pie' ? (
+          <>
+            <span>Select Data: </span>
+            <select value={xAxisMetric} onChange={e => setXAxisMetric(e.target.value)}>
+              {dataOptions[selectedDataType].map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+            </select>
+          </>
+        ) : (
+          <>
+
       <span>Select X-axis: </span>
       <select value={xAxisMetric} onChange={e => setXAxisMetric(e.target.value)}>
         {xAxisOptions[selectedDataType].map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
@@ -60,14 +89,10 @@ function ControlsWrapper({
       <select value={yAxisMetric} onChange={e => setYAxisMetric(e.target.value)}>
         {yAxisOptions[selectedDataType].map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
       </select>
-
-      <span>Select Chart Type: </span>
-      <select value={chartType} onChange={e => setChartType(e.target.value)}>
-        <option value="Bar">Bar Chart</option>
-        <option value="Line">Line Chart</option>
-        <option value="Pie">Pie Chart</option>
-      </select>
+       </>
+           )}
       <button onClick={onAddChart}>Add Chart</button>
+
     </div>
   );
 }

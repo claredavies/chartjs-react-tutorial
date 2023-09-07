@@ -13,23 +13,9 @@ function PieChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete, 
       },
       title: {
         display: true,
-        text: xAxisMetric + " vs " + yAxisMetric + " for " + clusterName
+        text: xAxisMetric
       }
     },
-    scales: {
-          x: {
-            title: {
-              display: true,
-              text: xAxisMetric
-            }
-          },
-          y: {
-            title: {
-              display: true,
-              text: yAxisMetric
-            }
-          }
-    }
   };
 
   return (
