@@ -1,6 +1,7 @@
 import { colorSet1, colorSet2 } from './constants.js';
 import { useState } from "react";
 import "./App.css";
+import './Spinner.css';
 import ControlsWrapper from "./components/ControlsWrapper";
 import ChartRenderer from './components/ChartRenderer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -63,8 +64,16 @@ function App() {
       const updatedCharts = addNewChart(chartType, xAxisMetric, yAxisMetric, selectedCluster, generateChartData, transformedInstanceData, charts, selectedDataType);
       setCharts(updatedCharts);
   };
+    if (!jsonData) {
+        return (
+          <div className="App">
+            <h1 className="app-title">AWS Services Price Dashboard</h1>
+            <div className="spinner"></div> {/* this is the loading spinner */}
+          </div>
+        );
+      }
 
-  return (
+    return (
     <div className="App">
         <h1 className="app-title">AWS Services Price Dashboard</h1>
               <button onClick={() => setIsEditing(!isEditing)} className="edit-button">

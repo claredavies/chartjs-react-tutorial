@@ -12,7 +12,8 @@ function BarChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete, 
       },
       title: {
         display: true,
-        text: xAxisMetric + " vs " + yAxisMetric
+        text: xAxisMetric + " vs " + yAxisMetric,
+        align: 'center'
       }
     },
     scales: {
