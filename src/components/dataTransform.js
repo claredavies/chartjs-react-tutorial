@@ -15,12 +15,17 @@ const transformData = (jsonData, dataType) => {
                 ClusterId: jsonData.ClusterId,
                 ClusterName: jsonData.ClusterName,
                 InstanceType: instance.InstanceType,
-                PricePerUnit: instance.TotalPricePerUnit,
+                TotalPricePerUnit: instance.TotalPricePerUnit,
                 EC2PricePerUnit: instance.EC2PricePerUnit,
                 EMRPricePerUnit: instance.EMRPricePerUnit,
                 Ec2InstanceId: instance.Ec2InstanceId,
                 State: instance.State,
-                Market: instance.Market
+                Market: instance.Market,
+                MemoryHours: instance.MemoryHours,
+                VCPUHours: instance.VCPUHours,
+                CostPerGBHour: instance.CostPerGBHour,
+                CostPerVCoreHour: instance.CostPerVCoreHour,
+                TotalAccumulatedCost: instance.TotalAccumulatedCost
             });
         });
         return transformedInstances;

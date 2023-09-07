@@ -11,10 +11,7 @@ function ControlsWrapper({
 
   const xAxisOptions = {
     'Instances': [
-      { value: "Ec2InstanceId", label: "Ec2 Instance Id" },
-      { value: "InstanceType", label: "Instance Type" },
-      { value: "Market", label: "Market" },
-      { value: "State", label: "State" },
+      { value: "Ec2InstanceId", label: "Ec2 Instance Id" }
     ],
     'Applications': [
       { value: "ApplicationName", label: "Application Name" },
@@ -25,9 +22,16 @@ function ControlsWrapper({
 
   const yAxisOptions = {
     'Instances': [
-      { value: "PricePerUnit", label: "Price Per Unit" },
+      { value: "TotalPricePerUnit", label: "Total Price Per Unit" },
       { value: "EC2PricePerUnit", label: "EC2 Price Per Unit" },
       { value: "EMRPricePerUnit", label: "EMR Price Per Unit" },
+      { value: "InstanceType", label: "Instance Type" },
+      { value: "Market", label: "Market" },
+      { value: "MemoryHours", label: "Memory Hours" },
+      { value: "VCPUHours", label: "VCPU Hours" },
+      { value: "CostPerGBHour", label: "Cost Per GB Hour" },
+      { value: "CostPerVCoreHour", label: "Cost Per VCore Hour" },
+      { value: "TotalAccumulatedCost", label: "Total Accumulated Cost" }
     ],
     'Applications': [
        { value: "ElapsedTime", label: "Elapsed Time" },
@@ -37,17 +41,7 @@ function ControlsWrapper({
     ]
   };
 
-  const dataOptions = {
-    'Instances': [
-      { value: "Ec2InstanceId", label: "Ec2 Instance Id" },
-      { value: "InstanceType", label: "Instance Type" },
-      // ... other data options for Instances
-    ],
-    'Applications': [
-      { value: "ApplicationName", label: "Application Name" },
-      // ... other data options for Applications
-    ]
-  };
+
 
   useEffect(() => {
     // Reset x and y axis metrics when changing data type
@@ -70,15 +64,6 @@ function ControlsWrapper({
               <option value="Pie">Pie Chart</option>
             </select>
 
-    {chartType === 'Pie' ? (
-          <>
-            <span>Select Data: </span>
-            <select value={xAxisMetric} onChange={e => setXAxisMetric(e.target.value)}>
-              {dataOptions[selectedDataType].map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-          </>
-        ) : (
-          <>
 
       <span>Select X-axis: </span>
       <select value={xAxisMetric} onChange={e => setXAxisMetric(e.target.value)}>
@@ -89,8 +74,7 @@ function ControlsWrapper({
       <select value={yAxisMetric} onChange={e => setYAxisMetric(e.target.value)}>
         {yAxisOptions[selectedDataType].map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
       </select>
-       </>
-           )}
+
       <button onClick={onAddChart}>Add Chart</button>
 
     </div>

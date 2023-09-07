@@ -41,9 +41,11 @@ function App() {
  const handleRefreshChart = () => {
      fetchData();
 
+
      // Iterate over each chart and transform the data based on its dataType
      const updatedCharts = charts.map(chartConfig => {
          const transformedData = transformData(jsonData, chartConfig.dataType);
+         console.log(transformedData)
          return {
              ...chartConfig,
              data: generateChartDataForConfig(transformedData, chartConfig, colorSet1) // Adjust as needed

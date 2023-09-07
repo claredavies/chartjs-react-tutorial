@@ -13,7 +13,7 @@ function PieChart({ chartData, xAxisMetric, yAxisMetric, clusterName, onDelete, 
       },
       title: {
         display: true,
-        text: xAxisMetric
+        text:  yAxisMetric + " vs " + xAxisMetric
       }
     },
   };

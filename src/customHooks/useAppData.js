@@ -21,7 +21,6 @@ export const useAppData = () => {
     }
 
     useEffect(() => {
-        console.log("change to jsonData or selectedDataType")
         if (jsonData) {
             const newData = transformData(jsonData, selectedDataType);
             setTransformedInstanceData(newData);
