@@ -70,7 +70,7 @@ it('fetches data on initial render', async () => {
     await waitForNextUpdate();
 
     // Check that jsonData is now populated with mockData
-    expect(result.current.jsonDat).toEqual(mockData);
+    expect(result.current.jsonDa).toEqual(mockData);
 
     // check fetch only called once (no unnecessary calls)
     expect(fetchMock.mock.calls.length).toEqual(1);
