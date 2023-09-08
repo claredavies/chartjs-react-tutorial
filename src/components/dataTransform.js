@@ -6,7 +6,8 @@
  * @param {String} dataType - Either 'Applications' or 'Instances'.
  * @returns {Array} - The transformed data based on the dataType.
  */
-const transformData = (jsonData, dataType) => {
+
+ const transformData = (jsonData, dataType) => {
 
     if (dataType === 'Instances') {
         const transformedInstances = [];

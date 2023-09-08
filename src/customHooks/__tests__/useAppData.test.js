@@ -1,46 +1,14 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
 import { useAppData } from '../useAppData';
-// Adjust the path accordingly
+import { mockData } from '../../mocks/mockJsonData'
+import transformData from '../../components/dataTransform';
 
-const mockData = {
-   "ClusterId": "j-3O1THJ9OLORHS",
-   "ClusterName": "emr_job_cost_estimator_test_cluster",
-   "Instances": [
-       {
-           "Ec2InstanceId": "i-0158846fe2ec78ad5",
-           "InstanceType": "m5.xlarge",
-           "EC2PricePerUnit": 0.1284,
-           "EMRPricePerUnit": 0.005,
-           "TotalPricePerUnit": 0.1334,
-           "Memory": 16,
-           "VCPU": 4,
-           "Market": "SPOT",
-           "State": "RUNNING",
-           "CreationDateTime": "2023-08-18T10:30:43.564+01:00",
-           "ReadyDateTime": "2023-08-18T10:39:26.631+01:00",
-           "EndDateTime": null,
-           "DurationHours": 0,
-           "MemoryHours": 0.06023455697359534,
-           "VCPUHours": 0.015058639243398834,
-           "CostPerGBHour": 0.0083375,
-           "CostPerVCoreHour": 0.03335,
-           "TotalAccumulatedCost": 35.43480864208305
-       }
-   ],
-   "Applications": [
-       {
-           "ApplicationId": "application_1692351496700_0008",
-           "ApplicationName": "PythonPi",
-           "State": "FINISHED",
-           "FinalStatus": "FINISHED",
-           "ElapsedTime": 11725,
-           "MemorySeconds": 76732,
-           "VcoreSeconds": 17,
-           "AttributedCost": 0.057661223763954376
-       }
-   ]
-};
+//TESTING
+//1. The hook fetches data correctly.
+//2. The hook calls the transformData function when necessary.
+//3. The transformed data is stored correctly.
+//4. You can mock the transformData function here just to ensure it's called, without bothering about the exact transformation.
 
 // Enable fetch mock
 fetchMock.enableMocks();
@@ -49,6 +17,12 @@ fetchMock.enableMocks();
 beforeEach(() => {
   fetchMock.resetMocks();
 });
+
+// jest needs to mock the module before mocking the function
+jest.mock('../../components/dataTransform', () => ({
+  __esModule: true, // this property makes it work smoothly with ES6 imports
+  default: jest.fn()
+}));
 
 //Check if fetch is called on initial render
 // it is a function from Jest which defines a single test
@@ -75,3 +49,30 @@ it('fetches data on initial render', async () => {
     // check fetch only called once (no unnecessary calls)
     expect(fetchMock.mock.calls.length).toEqual(1);
 });
+
+it('calls the transformData function when necessary', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify(mockData));
+
+    // Mock the implementation for this test case
+    transformData.mockImplementation((data, type) => {
+        return data;
+    });
+
+    const { result, waitForNextUpdate } = renderHook(() => useAppData());
+
+    await waitForNextUpdate();
+
+    // Check if transformData was called
+    expect(transformData).toHaveBeenCalled();
+
+    // Clean up mock after test
+    transformData.mockClear();
+});
+
+//check calls transformData when dataType changes
+
+
+
+
+
+
