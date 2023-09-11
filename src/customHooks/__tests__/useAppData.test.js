@@ -17,7 +17,27 @@ describe('useAppData hook', () => {
     beforeEach(() => {
       fetchMock.resetMocks();
       jest.clearAllMocks();
+      jest.resetModules();
     });
+
+    it('checking setJsonData and setSelectedDataType called on initial render', async () => {
+        // Locally mock the hooks for this test
+        jest.doMock('../useAppDataStates', () => ({
+          useJsonDataState: jest.fn().mockReturnValue([null, jest.fn()]),
+          useSelectedDataTypeState: jest.fn().mockReturnValue(['Instances', jest.fn()]),
+          useTransformedInstanceDataState: jest.fn().mockReturnValue([[], jest.fn()])
+        }));
+
+        // Now you need to require (import) the function/module AFTER the mock
+        const { useAppData } = require('../useAppData'); // Replace with the actual path to your useAppData
+        const mockedHooks = require('../useAppDataStates');
+
+        const { result, waitForNextUpdate } = renderHook(() => useAppData());
+
+        // Now you can assert that the mocked function has been called
+        expect(mockedHooks.useJsonDataState).toHaveBeenCalled();
+        expect(mockedHooks.useTransformedInstanceDataState).toHaveBeenCalled();
+      });
 
     it('fetches data on initial render', async () => {
         fetchMock.mockResponseOnce(JSON.stringify(mockData));
@@ -36,7 +56,6 @@ describe('useAppData hook', () => {
 
         expect(result.current.jsonData).toBeNull();
         expect(transformData).not.toHaveBeenCalled();
-
         await waitForNextUpdate();
 
         expect(result.current.jsonData).toEqual(mockData);
