@@ -1,77 +1,87 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
 import { useAppData } from '../useAppData';
-// Adjust the path accordingly
-
-const mockData = {
-   "ClusterId": "j-3O1THJ9OLORHS",
-   "ClusterName": "emr_job_cost_estimator_test_cluster",
-   "Instances": [
-       {
-           "Ec2InstanceId": "i-0158846fe2ec78ad5",
-           "InstanceType": "m5.xlarge",
-           "EC2PricePerUnit": 0.1284,
-           "EMRPricePerUnit": 0.005,
-           "TotalPricePerUnit": 0.1334,
-           "Memory": 16,
-           "VCPU": 4,
-           "Market": "SPOT",
-           "State": "RUNNING",
-           "CreationDateTime": "2023-08-18T10:30:43.564+01:00",
-           "ReadyDateTime": "2023-08-18T10:39:26.631+01:00",
-           "EndDateTime": null,
-           "DurationHours": 0,
-           "MemoryHours": 0.06023455697359534,
-           "VCPUHours": 0.015058639243398834,
-           "CostPerGBHour": 0.0083375,
-           "CostPerVCoreHour": 0.03335,
-           "TotalAccumulatedCost": 35.43480864208305
-       }
-   ],
-   "Applications": [
-       {
-           "ApplicationId": "application_1692351496700_0008",
-           "ApplicationName": "PythonPi",
-           "State": "FINISHED",
-           "FinalStatus": "FINISHED",
-           "ElapsedTime": 11725,
-           "MemorySeconds": 76732,
-           "VcoreSeconds": 17,
-           "AttributedCost": 0.057661223763954376
-       }
-   ]
-};
+import { mockData } from '../../mocks/mockJsonData'
+import transformData from '../../components/dataTransform';
 
 // Enable fetch mock
 fetchMock.enableMocks();
 
-// Reset fetch mock before each test
-beforeEach(() => {
-  fetchMock.resetMocks();
-});
+jest.mock('../../components/dataTransform', () => ({
+  __esModule: true,
+  default: jest.fn()
+}));
 
-//Check if fetch is called on initial render
-// it is a function from Jest which defines a single test
-// second argument is a callback function
-it('fetches data on initial render', async () => {
-    // the next time fetch is called (in fetchData where call API using fetch) instead of returning the API response
-    // the mock response is returned
-    fetchMock.mockResponseOnce(JSON.stringify(mockData));
+describe('useAppData hook', () => {
+    // Reset fetch mock and clear all mocks before each test
+    beforeEach(() => {
+      fetchMock.resetMocks();
+      jest.clearAllMocks();
+      jest.resetModules();
+    });
 
-    // render hook is used to test a custom Hook - in this case useAppData()
-    // renderHook returns an object containing several properties and utility methods to help with testing.
-    // waitForNextUpdate: This is one of the utility methods provided by the renderHook result.
-    // It's particularly useful for waiting for asynchronous operations to complete in the hook (like data fetching).
-    const { result, waitForNextUpdate } = renderHook(() => useAppData());
+    it('checking setJsonData and setSelectedDataType called on initial render', async () => {
+        // Locally mock the hooks for this test
+        jest.doMock('../useAppDataStates', () => ({
+          useJsonDataState: jest.fn().mockReturnValue([null, jest.fn()]),
+          useSelectedDataTypeState: jest.fn().mockReturnValue(['Instances', jest.fn()]),
+          useTransformedInstanceDataState: jest.fn().mockReturnValue([[], jest.fn()])
+        }));
 
-    // Check that jsonData is initially null
-    expect(result.current.jsonData).toBeNull();
+        // Now you need to require (import) the function/module AFTER the mock
+        const { useAppData } = require('../useAppData'); // Replace with the actual path to your useAppData
+        const mockedHooks = require('../useAppDataStates');
 
-    await waitForNextUpdate();
+        const { result, waitForNextUpdate } = renderHook(() => useAppData());
 
-    // Check that jsonData is now populated with mockData
-    expect(result.current.jsonData).toEqual(mockData);
+        // Now you can assert that the mocked function has been called
+        expect(mockedHooks.useJsonDataState).toHaveBeenCalled();
+        expect(mockedHooks.useTransformedInstanceDataState).toHaveBeenCalled();
+      });
 
-    // check fetch only called once (no unnecessary calls)
-    expect(fetchMock.mock.calls.length).toEqual(1);
+    it('fetches data on initial render', async () => {
+        fetchMock.mockResponseOnce(JSON.stringify(mockData));
+
+        const { waitForNextUpdate } = renderHook(() => useAppData());
+        await waitForNextUpdate();
+
+        expect(fetchMock.mock.calls.length).toEqual(1);
+    });
+
+    it('transforms data on initial render when json is not null', async () => {
+        fetchMock.mockResponseOnce(JSON.stringify(mockData));
+        transformData.mockImplementation((data, type) => data);
+
+        const { result, waitForNextUpdate } = renderHook(() => useAppData());
+
+        expect(result.current.jsonData).toBeNull();
+        expect(transformData).not.toHaveBeenCalled();
+        await waitForNextUpdate();
+
+        expect(result.current.jsonData).toEqual(mockData);
+        expect(transformData).toHaveBeenCalled();
+    });
+
+    describe('transformData calls based on selectedDataType changes', () => {
+        beforeEach(() => {
+            fetchMock.mockResponseOnce(JSON.stringify(mockData));
+            transformData.mockImplementation((data, type) => data);
+        });
+
+        it('calls transformData when selectedDataType changes', async () => {
+            const { result, waitForNextUpdate } = renderHook(() => useAppData());
+            await waitForNextUpdate();
+
+            expect(transformData).toHaveBeenCalledTimes(1);
+
+            act(() => result.current.setSelectedDataType('Applications'));
+            expect(transformData).toHaveBeenCalledTimes(2);
+
+            act(() => result.current.setSelectedDataType('Applications'));
+            expect(transformData).toHaveBeenCalledTimes(2);
+
+            act(() => result.current.setSelectedDataType('Instances'));
+            expect(transformData).toHaveBeenCalledTimes(3);
+        });
+    });
 });

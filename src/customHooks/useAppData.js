@@ -1,11 +1,12 @@
 // useAppData.js
 import { useState, useEffect } from 'react';
 import transformData from '../components/dataTransform';
+import { useJsonDataState, useSelectedDataTypeState, useTransformedInstanceDataState } from './useAppDataStates';
 
 export const useAppData = () => {
-    const [jsonData, setJsonData] = useState(null);
-    const [selectedDataType, setSelectedDataType] = useState('Instances');
-    const [transformedInstanceData, setTransformedInstanceData] = useState([]);
+    const [jsonData, setJsonData] = useJsonDataState();
+    const [selectedDataType, setSelectedDataType] = useSelectedDataTypeState();
+    const [transformedInstanceData, setTransformedInstanceData] = useTransformedInstanceDataState();
 
     useEffect(() => {
             console.log("called with intial render")
